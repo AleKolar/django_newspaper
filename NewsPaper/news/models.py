@@ -2,20 +2,21 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Author(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, default=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     rating = models.IntegerField(default=0)
 
     def update_rating(self):
-        posts_rating = sum([post.rating * 3 for post in self.post_set.all()])
-        comments_rating = sum([comment.rating for comment in self.comments.all()])
-        comments_to_posts_rating = sum([comment.rating for post in self.post_set.all() for comment in post.comments.all()])
-        self.rating = posts_rating + comments_rating + comments_to_posts_rating
+        post_rating = sum([post.rating * 3 for post in self.post_set.all()])
+        comment_rating = sum([comment.rating for comment in Comment.objects.filter(author=self)])
+        post_comment_rating = sum([comment.rating for comment in Comment.objects.filter(post__author=self)])
+
+        self.rating = post_rating + comment_rating + post_comment_rating
         self.save()
 
-
     def best_user(self):
-        best_user = User.objects.all().order_by('-rating').first()
-        return best_user.username, best_user.rating
+        best_author = Author.objects.all().order_by('-rating').first()
+        best_user = best_author.user
+        return best_user.username, best_author.rating
 
 
     def best_post(self):
@@ -62,11 +63,12 @@ class PostCategory(models.Model):
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments')
-    author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='comments_author')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE)
     text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     rating = models.IntegerField(default=0)
+
 
     def like(self):
         self.rating += 1

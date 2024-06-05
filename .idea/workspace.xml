@@ -5,20 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5648e415-9a0a-41f7-bb1a-9355f59bf229" name="Changes" comment="add_bd">
-      <change afterPath="$PROJECT_DIR$/.idea/django_newspaper.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/NewsPaper/db.sqlite3" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/NewsPaper/news/migrations/0002_delete_user_any_remove_author_author_and_more.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NewsPaper/NewsPaper/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/NewsPaper/NewsPaper/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NewsPaper/NewsPaper/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/NewsPaper/NewsPaper/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NewsPaper/db_news" beforeDir="false" afterPath="$PROJECT_DIR$/NewsPaper/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NewsPaper/news/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/NewsPaper/news/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NewsPaper/news/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/NewsPaper/news/migrations/0001_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NewsPaper/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/NewsPaper/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NewsPaper/news/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/NewsPaper/news/migrations/0002_delete_user_any_remove_author_author_and_more.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/NewsPaper/news/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/NewsPaper/news/models.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -159,7 +149,15 @@
       <option name="project" value="LOCAL" />
       <updated>1717336831623</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="add_bd">
+      <option name="closed" value="true" />
+      <created>1717561056137</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1717561056137</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
