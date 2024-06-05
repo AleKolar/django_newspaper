@@ -16,19 +16,11 @@ class Author(models.Model):
     def best_user(self):
         best_author = Author.objects.all().order_by('-rating').first()
         best_user = best_author.user
-        return best_user.username, best_author.rating
+        #return best_user.username, best_author.rating
+        return best_user.user, best_author.rating
 
 
-    def best_post(self):
-        best_post = Post.objects.filter(categories__name='Category1').order_by('-rating').first()
-        best_post_content = best_post.content[:50]
-        return best_post.author.user.username, best_post.created_at, best_post.rating, best_post.title, best_post_content
 
-
-    def best_post_comments(self):
-        best_post_comments = Comment.objects.filter(post=self.best_post)
-        for comment in best_post_comments:
-            return comment.created_at, comment.user.username, comment.rating, comment.content
 
 class Category(models.Model):
     name = models.CharField(max_length=255, unique=True)
@@ -57,6 +49,11 @@ class Post(models.Model):
     def preview(self):
         return self.content[:124] + '...'
 
+    def best_post(self):
+        best_post = Post.objects.filter(categories__name='Category1').order_by('-rating').first()
+        best_post_content = best_post.content[:50]
+        return best_post.author.user.username, best_post.created_at, best_post.rating, best_post.title, best_post_content
+
 class PostCategory(models.Model):
     post = models.ForeignKey('Post', on_delete=models.CASCADE)
     category = models.ForeignKey('Category', on_delete=models.CASCADE)
@@ -77,3 +74,8 @@ class Comment(models.Model):
     def dislike(self):
         self.rating -= 1
         self.save()
+
+    def best_post_comments(self):
+        best_post_comments = Comment.objects.filter(post=self.best_post)
+        for comment in best_post_comments:
+            return comment.created_at, comment.user.username, comment.rating, comment.content
