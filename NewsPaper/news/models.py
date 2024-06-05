@@ -1,64 +1,49 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models import CharField
-from django.urls import reverse
-
 
 class Author(models.Model):
-    username = models.CharField('username', max_length=150, unique=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, default=True)
+    rating = models.IntegerField(default=0)
 
-    ratingAuthor = models.SmallIntegerField(default=0)
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(args, kwargs)
-        self.Post = None
-        self.Comment = None
-
-    def __str__(self) -> CharField:
-        return self.username
-
-    def update_rating(self):  # Рейтинг состоит из следующих слагаемых:
-        postRat = self.Post.rating + self.Comment.rating
-        self.ratingAuthor = postRat
-        '''
-        #  суммарный рейтинг статей автора умножается на 3;
-        postRat = self.post_set.all().aggregate(sum=Sum('rating'))['sum']
-        #  суммарный рейтинг все.х комментариев автора;
-        userRat = self.authorUser.comment_set.all().aggregate(sum=Sum('rating'))['sum']
-        #  суммарный рейтинг всех комментариев к статьям автора.
-        commentRat = Comment.objects.filter(commentPost__author=self).aggregate(sum=Sum('rating'))['sum']
-        self.ratingAuthor = postRat * 3 + userRat + commentRat
-        '''
+    def update_rating(self):
+        posts_rating = sum([post.rating * 3 for post in self.post_set.all()])
+        comments_rating = sum([comment.rating for comment in self.comments.all()])
+        comments_to_posts_rating = sum([comment.rating for post in self.post_set.all() for comment in post.comments.all()])
+        self.rating = posts_rating + comments_rating + comments_to_posts_rating
         self.save()
 
 
+    def best_user(self):
+        best_user = User.objects.all().order_by('-rating').first()
+        return best_user.username, best_user.rating
+
+
+    def best_post(self):
+        best_post = Post.objects.filter(categories__name='Category1').order_by('-rating').first()
+        best_post_content = best_post.content[:50]
+        return best_post.author.user.username, best_post.created_at, best_post.rating, best_post.title, best_post_content
+
+
+    def best_post_comments(self):
+        best_post_comments = Comment.objects.filter(post=self.best_post)
+        for comment in best_post_comments:
+            return comment.created_at, comment.user.username, comment.rating, comment.content
+
 class Category(models.Model):
-    categoryName = models.CharField(max_length=64, unique=True)
-    subscribers = models.ManyToManyField(User, blank=True)
-
-    def __str__(self) -> CharField:
-        return self.categoryName
-
-
+    name = models.CharField(max_length=255, unique=True)
 
 class Post(models.Model):
-    ARTICLE = 'AR'
-    NEWS = 'NW'
-    POST_TYPE = [
-        (ARTICLE, 'Статья'),
-        (NEWS, 'Новость')
-    ]
-
-    author = models.ForeignKey(Author, on_delete=models.CASCADE, verbose_name='Автор')
-    categoryType = models.CharField(max_length=2, choices=POST_TYPE, default=ARTICLE, verbose_name='Тип')
-    dateCreation = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
-    postCategory = models.ManyToManyField(Category, through='PostCategory', verbose_name='Категория')
-    title = models.CharField(max_length=128, verbose_name='Заголовок')
-    text = models.TextField(verbose_name='Текст')
-    rating = models.SmallIntegerField(default=0, verbose_name='Рейтинг')
-
-    def __str__(self) -> str:
-        return f'{self.title} {self.preview()}'
+    author = models.ForeignKey('Author', on_delete=models.CASCADE, blank=True)
+    POST_TYPES = (
+        ('article', 'Article'),
+        ('news', 'News'),
+    )
+    post_type = models.CharField(max_length=10, choices=POST_TYPES)
+    created_at = models.DateTimeField(auto_now_add=True)
+    categories = models.ManyToManyField('Category', through='PostCategory')
+    title = models.CharField(max_length=255)
+    content = models.TextField()
+    rating = models.IntegerField(default=0)
 
     def like(self):
         self.rating += 1
@@ -69,30 +54,19 @@ class Post(models.Model):
         self.save()
 
     def preview(self):
-        return self.text[:124] + '...'
-
-    def get_absolute_url(self):
-        return reverse('post_detail', kwargs={'pk': self.pk})
-
+        return self.content[:124] + '...'
 
 class PostCategory(models.Model):
-    postThrough = models.ForeignKey(Post, on_delete=models.CASCADE)
-    categoryThrough = models.ForeignKey(Category, on_delete=models.CASCADE)
-
+    post = models.ForeignKey('Post', on_delete=models.CASCADE)
+    category = models.ForeignKey('Category', on_delete=models.CASCADE)
 
 class Comment(models.Model):
-    commentPost = models.ForeignKey(Post, on_delete=models.CASCADE)
-    commentUser = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments')
+    author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='comments_author')
     text = models.TextField()
-    dateCreation = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     rating = models.IntegerField(default=0)
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(args, kwargs)
-        self.username = None
-
-    def __str__(self):
-        return self.username
 
     def like(self):
         self.rating += 1
