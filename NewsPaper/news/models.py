@@ -14,10 +14,10 @@ class Author(models.Model):
         self.rating = post_rating + comment_rating + post_comment_rating
         self.save()
 
+    # Как-то не пришлось ей воспользоваться
     def best_user(self):
         best_author = Author.objects.all().order_by('-rating').first()
         best_user = best_author.user
-        # return best_user.username, best_author.rating
         return best_user.user, best_author.rating
 
 
