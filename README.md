@@ -83,7 +83,7 @@ best_post = Post.objects.filter(categories__name='Category1').order_by('-rating'
 
 print(best_post.author.user.username, best_post.created_at, best_post.rating, best_post.title, best_post.content[:50]) 
 
-Просто доп.функция, потому-что я запутался(просто с ней, уже, «закоммитино» было:
+Просто доп.функция в models, потому-что я запутался и "она" помогла(просто с ней, уже, «закоммитино» было:
 
  best_post_func = Post.display_best_post(Post)
 
