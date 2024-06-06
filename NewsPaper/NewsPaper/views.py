@@ -1,4 +1,4 @@
-from NewsPaper.news.models import Post, Comment
+"""from NewsPaper.news.models import Post, Comment
 
 
 def display_best_post_and_comments():
@@ -21,4 +21,4 @@ def display_best_post_and_comments():
         print("Text:", comment.text)
         print("--------------")
 
-display_best_post_and_comments = display_best_post_and_comments()
+display_best_post_and_comments = display_best_post_and_comments()""" Не стал так делать(все в models)
