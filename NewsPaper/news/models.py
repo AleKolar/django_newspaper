@@ -60,8 +60,7 @@ class Post(models.Model):
         print("Title:", best_post.title)
         print("Preview:", best_post_preview)
         print("Сontent:", best_post_content)
-        return best_post
-
+        
 
 class PostCategory(models.Model):
     post = models.ForeignKey('Post', on_delete=models.CASCADE)
@@ -76,11 +75,7 @@ class Comment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     rating = models.IntegerField(default=0)
 
-    def display_best_comment(self):
-        best_post_comments = Comment.objects.filter(post=Post.display_best_post())
-        for comment in best_post_comments:
-            return comment.created_at, comment.user.username, comment.rating, comment.text
-
+    
     def like(self):
         self.rating += 1
         self.save()
