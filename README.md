@@ -41,13 +41,20 @@ comment4 = Comment.objects.create(post=news1, user=user2, author_id=2, text ='Co
 
 6.	Применение функций like() и dislike() к объектам и обновление рейтингов:
 
+post1.like()
+
 post1.like() 
-post1.like() 
+
 post2.dislike() 
+
 comment1.like() 
+
 comment2.like() 
+
 comment3.dislike() 
+
 author1.update_rating() 
+
 author2.update_rating() 
 
 7.	Вывод username и рейтинга лучшего пользователя:
