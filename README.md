@@ -60,11 +60,14 @@ author2.update_rating()
 7.	Вывод username и рейтинга лучшего пользователя:
 
 best_user = Author.objects.all().order_by('-rating').first() 
+
 print(best_user.user, best_user.rating) 
 
 8.	Вывод информации о лучшей статье:
 
-best_post = Post.objects.filter(categories__name='Category1').order_by('-rating').first() print(best_post.author.user.username, best_post.created_at, best_post.rating, best_post.title, best_post.content[:50]) 
+best_post = Post.objects.filter(categories__name='Category1').order_by('-rating').first() 
+
+print(best_post.author.user.username, best_post.created_at, best_post.rating, best_post.title, best_post.content[:50]) 
 
 Просто доп.функция, потому-что я запутался(просто с ней, уже, «закоммитино» было:
  best_post_func = Post.display_best_post(Post)
