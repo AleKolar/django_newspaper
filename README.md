@@ -30,6 +30,7 @@ Category.objects.create(name='Category4')
 
 categories = Category.objects.all()
 
+
 post1 = Post.objects.create(author=author1, title='Post 1', content='Content 1')
 
 post1.categories.add(categories[0], categories[1]) 
