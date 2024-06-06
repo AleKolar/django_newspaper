@@ -60,6 +60,7 @@ class Post(models.Model):
         print("Title:", best_post.title)
         print("Preview:", best_post_preview)
         print("Сontent:", best_post_content)
+        return best_post
         
 
 class PostCategory(models.Model):
